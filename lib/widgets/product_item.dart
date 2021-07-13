@@ -1,0 +1,56 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:store_app/providers/cart_provider.dart';
+import 'package:store_app/providers/product.dart';
+import 'package:store_app/screens/product_detail_screen.dart';
+
+class ProductItem extends StatelessWidget {
+  const ProductItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _product = Provider.of<Product>(context, listen: false);
+    final _cartProvider = Provider.of<CartProvider>(context, listen: false);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: GridTile(
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                  arguments: _product);
+            },
+            child: Image.network(
+              _product.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+          footer: GridTileBar(
+            backgroundColor: Colors.black87,
+            leading: Consumer<Product>(
+                builder: (ctx, product, _) => IconButton(
+                      icon: Icon(
+                        _product.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                      ),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () {
+                        _product.toggleFavoriteStatus();
+                      },
+                    )),
+            title: Text(
+              _product.title,
+              textAlign: TextAlign.center,
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                _cartProvider.addItem(_product);
+              },
+            ),
+          )),
+    );
+  }
+}
