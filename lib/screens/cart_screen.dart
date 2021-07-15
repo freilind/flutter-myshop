@@ -21,32 +21,64 @@ class CartScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-          Text('Total', style: TextStyle(fontSize: 20)),
-          Spacer(),
-          Chip(label: Text('\$${_cartProvider.totalAmount.toStringAsFixed(2)}', 
-          style: TextStyle(color: Theme.of(context).primaryTextTheme.headline6?.color)),
-          backgroundColor: Theme.of(context).primaryColor),
-          TextButton(
-            onPressed: () {
-              Provider.of<OrdersProvider>(context, listen: false).addOrder(
-                _cartProvider.items.values.toList(),
-                _cartProvider.totalAmount);
-                _cartProvider.clear();
-            },
-            child: Text('Order now'),
-            style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(
-                    Theme.of(context).primaryColor)),)
-        ]))),
+            Text('Total', style: TextStyle(fontSize: 20)),
+            Spacer(),
+            Chip(
+              label: Text('\$${_cartProvider.totalAmount.toStringAsFixed(2)}', 
+              style: TextStyle(color: Theme.of(context).primaryTextTheme.headline6?.color)),
+              backgroundColor: Theme.of(context).primaryColor),
+            OrderButton(cartProvider: _cartProvider)
+          ]))),
         SizedBox(height: 10),
         Expanded(child: ListView.builder(
-          itemBuilder: (context, index) => CartItem(
+          itemBuilder: (ctx, index) => CartItem(
               id: _cartProvider.items.values.toList()[index].id,
-              product: _cartProvider.items.values.toList()[index].product,
+              productId: _cartProvider.items.keys.toList()[index],
+              price: _cartProvider.items.values.toList()[index].price,
               quantity: _cartProvider.items.values.toList()[index].quantity,
-              title: _cartProvider.items.values.toList()[index].product.title),
+              title: _cartProvider.items.values.toList()[index].title),
               itemCount: _cartProvider.items.length))
       ]),
     );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key? key,
+    required CartProvider cartProvider,
+  }) : _cartProvider = cartProvider, super(key: key);
+
+  final CartProvider _cartProvider;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
+      style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all<Color>(
+              Theme.of(context).primaryColor)),
+      onPressed: (widget._cartProvider.totalAmount <= 0 ) || _isLoading 
+        ? null 
+        : () async {
+          setState(() {
+            _isLoading = true;
+          });
+          await Provider.of<OrdersProvider>(context, listen: false).addOrder(
+            widget._cartProvider.items.values.toList(),
+            widget._cartProvider.totalAmount);
+            setState(() {
+              _isLoading = false;
+            });
+            widget._cartProvider.clear();
+        },
+      );
   }
 }
