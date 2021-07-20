@@ -1,0 +1,80 @@
+{
+  "orders" : {
+    "IQQaZBkbS0hBtettgXhPu9eJJ3u1" : {
+      "-Mf-IsEmAW1yXNrmiuit" : {
+        "amount" : 139.97,
+        "dateTime" : "2021-07-19T15:47:52.565767",
+        "products" : [ {
+          "id" : "2021-07-19 15:47:47.024326",
+          "price" : 59.99,
+          "quantity" : 2,
+          "title" : "Trousers"
+        }, {
+          "id" : "2021-07-19 15:47:48.432561",
+          "price" : 19.99,
+          "quantity" : 1,
+          "title" : "Yellow Scarf"
+        } ]
+      },
+      "-Mf-ItxzfHpj7Ejfwo1w" : {
+        "amount" : 49.99,
+        "dateTime" : "2021-07-19T15:47:59.746839",
+        "products" : [ {
+          "id" : "2021-07-19 15:47:57.217842",
+          "price" : 49.99,
+          "quantity" : 1,
+          "title" : "A Pan."
+        } ]
+      }
+    },
+    "yhKU15hZO2aK8WyujKYeLxPw5bt1" : {
+      "-Mf-EWxX1Fm0RoChJkK7" : {
+        "amount" : 29.99,
+        "dateTime" : "2021-07-19T15:28:52.782582",
+        "products" : [ {
+          "id" : "2021-07-19 15:28:48.284219",
+          "price" : 29.99,
+          "quantity" : 1,
+          "title" : "Red shirt!"
+        } ]
+      }
+    }
+  },
+  "products" : {
+    "-MeaPGPfYd8hH-a0FKrS" : {
+      "creatorId": "9OcnZcb78QNxbImOcQgQL7CSUYj1",
+      "description" : "A red shirt - it is pretty red!",
+      "imageUrl" : "https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg",
+      "price" : 29.99,
+      "title" : "Red shirt!"
+    },
+    "-MeaPcuOZ8anULP_hLTi" : {
+      "creatorId": "9OcnZcb78QNxbImOcQgQL7CSUYj1",
+      "description" : "A nice pair of trousers.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg",
+      "price" : 59.99,
+      "title" : "Trousers"
+    },
+    "-MeblxH-ozKHWQ5Vcv8w" : {
+      "creatorId": "9OcnZcb78QNxbImOcQgQL7CSUYj1",
+      "description" : "Warm and cozy - exactly what you need for the winter.",
+      "imageUrl" : "https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg",
+      "price" : 19.99,
+      "title" : "Yellow Scarf"
+    },
+    "-MebmSQPhqzguHY9XDb3" : {
+      "creatorId": "9OcnZcb78QNxbImOcQgQL7CSUYj1",
+      "description" : "Prepare any meal you want.",
+      "imageUrl" : "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg",
+      "price" : 49.99,
+      "title" : "A Pan."
+    },
+    "-Mf3ek70AeZJJe1BHMhK" : {
+      "description" : "dumbells for exercise!.",
+      "creatorId": "9OcnZcb78QNxbImOcQgQL7CSUYj1",
+      "imageUrl" : "https://cdn.pixabay.com/photo/2015/01/10/17/32/physiotherapy-595529_960_720.jpg",
+      "price" : 11.99,
+      "title" : "dumbells!"
+    }
+  }
+}

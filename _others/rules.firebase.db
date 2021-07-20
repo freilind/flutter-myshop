@@ -1,0 +1,9 @@
+{
+  "rules": {
+    ".read": "auth != null && now < 1628740800000",  // 2021-8-12
+    ".write": "auth != null && now < 1628740800000",  // 2021-8-12
+    "products": {
+      ".indexOn": ["creatorId"]
+    }
+  }
+}

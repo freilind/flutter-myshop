@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:store_app/providers/base_provider.dart';
 import './cart_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,21 +13,50 @@ class Order {
   Order({Key? key, required this.id, required this.amount, required this.products, required this.dateTime});
 }
 
-class OrdersProvider with ChangeNotifier {
-  final _pathOrders = '';
+class OrdersProvider extends BaseProvider with ChangeNotifier {
+  final _pathOrders = 'orders';
+  final _pathExtension = '.json';
+  final _pathAuth = '?auth=';
   List<Order> _orders = [];
+  String authToken = '';
+  String userId = '';
+
+
+  set auth(token) {
+    this.authToken = token;
+    notifyListeners();
+  }
+
+  set orders(orders) {
+    this._orders = orders;
+    notifyListeners();
+  }
+ 
+  set userIdd(id) {
+    this.userId = id;
+    notifyListeners();
+  }
+
+  String get auth{
+    return this.authToken;
+  }
+ 
+  String get userIdd {
+    return this.userId;
+  }
+
   List<Order> get orders {
     return [..._orders];
   }
 
   Future<void> fetchAndSetOrders() async {
-    final _url = Uri.parse(_pathOrders);
+    final _url = Uri.parse('$pathBase/$_pathOrders/$userId$_pathExtension$_pathAuth$authToken');
     final response = await http.get(_url);
     final List<Order> loadedOrders = [];
-    final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    /*if (extractedData == null) {
+    final  extractedData = await json.decode(response.body) as Map<String, dynamic>?;
+    if (extractedData == null) {
       return;
-    }*/
+    }
     extractedData.forEach((orderId, orderData) {
       loadedOrders.add(
         Order(
@@ -51,7 +81,7 @@ class OrdersProvider with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CarItemProvider> cartProducts, double total) async {
-    final _url = Uri.parse(_pathOrders);
+    final _url = Uri.parse('$pathBase/$_pathOrders/$userId$_pathExtension$_pathAuth$authToken');
     final timestamp = DateTime.now();
     try {
       final response = await http.post(
@@ -74,8 +104,8 @@ class OrdersProvider with ChangeNotifier {
         dateTime: timestamp,
         products: cartProducts));
       notifyListeners();
-    } on Exception catch (_) {
-      
+    } on Exception catch (error) {
+      print(error);
     } 
   }
 }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:store_app/providers/base_provider.dart';
 
-class Product with ChangeNotifier {
-  final _pathProducts = '';
+class Product extends BaseProvider with ChangeNotifier {
+  final _pathUserFavorites = 'userFavorites';
   final _pathExtension = '.json';
+  final _pathAuth = 'auth=';
   final String id;
   final String title;
   final String description;
@@ -26,17 +28,15 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String token, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
-    final _url = Uri.parse('$_pathProducts/$id$_pathExtension');
+    final _url = Uri.parse('$pathBase/$_pathUserFavorites/$userId/$id$_pathExtension?$_pathAuth$token');
     try {
-      final response = await http.patch(
+      final response = await http.put(
         _url, 
-        body: json.encode({
-          'isFavorite': isFavorite
-        })
+        body: json.encode(isFavorite)
       );
       if (response.statusCode >= 400) {
         _setFavoriteValue(oldStatus);

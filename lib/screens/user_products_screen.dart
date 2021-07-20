@@ -9,12 +9,12 @@ class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
 
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<ProductsProvider>(context, listen: false).fetchAndSetProducts();
+    await Provider.of<ProductsProvider>(context, listen: false).fetchAndSetProducts(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final _productsProvider = Provider.of<ProductsProvider>(context);
+    //final _productsProvider = Provider.of<ProductsProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -28,22 +28,30 @@ class UserProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProducts(context),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: _productsProvider.items.length,
-            itemBuilder: (_, i) => Column(
-                  children: [
-                    UserProductItem(
-                      id: _productsProvider.items[i].id,
-                      title: _productsProvider.items[i].title,
-                      imageUrl: _productsProvider.items[i].imageUrl,
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder : (ctx, snapshot) => snapshot.connectionState ==
+        ConnectionState.waiting 
+        ? Center(child: CircularProgressIndicator()) 
+        : RefreshIndicator(
+          onRefresh: () => _refreshProducts(context),
+          child: Consumer<ProductsProvider>(
+            builder: (ctx, _productsProvider, _) => Padding(
+              padding: EdgeInsets.all(8),
+              child: ListView.builder(
+                itemCount: _productsProvider.items.length,
+                itemBuilder: (_, i) => Column(
+                      children: [
+                        UserProductItem(
+                          id: _productsProvider.items[i].id,
+                          title: _productsProvider.items[i].title,
+                          imageUrl: _productsProvider.items[i].imageUrl,
+                        ),
+                        Divider(),
+                      ],
                     ),
-                    Divider(),
-                  ],
-                ),
+              ),
+            ),
           ),
         ),
       ),
